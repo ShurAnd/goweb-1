@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	"net/http"
 	"time"
 )
 
@@ -17,5 +18,11 @@ type Recipe struct {
 func main() {
 	router := gin.Default()
 
-	router.Run()
+	router.GET("/hello", func(context *gin.Context) {
+		clientIP := context.ClientIP()
+
+		context.String(http.StatusOK, "Hello %s", clientIP)
+	})
+
+	router.Run(":9999")
 }
