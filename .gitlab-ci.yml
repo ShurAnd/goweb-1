@@ -1,0 +1,23 @@
+---
+stages:
+  - build
+  - test
+  - deploy
+
+image: alpine:3.21
+
+build-task:
+  stage: build
+  script:
+    - echo "build"
+
+test-task:
+  stage: test
+  script:
+    - echo "test"
+
+deploy-task:
+  stage: deploy
+  script:
+    - echo "deploy"
+...
