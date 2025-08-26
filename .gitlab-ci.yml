@@ -19,7 +19,7 @@ build-task:
     - groups
     - docker build -t $IMAGE_NAME:$IMAGE_TAG .
     - docker login -u $DOCKER_USER -p $DOCKER_PASS
-    - docker push $IMAGE_NAME:$IMAGE_TAG
+    - docker push $DOCKER_USER/$IMAGE_NAME:$IMAGE_TAG
 test-task:
   stage: test
   script:
