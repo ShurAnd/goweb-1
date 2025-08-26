@@ -17,8 +17,8 @@ build-task:
     - ls -la /var/run/docker.sock
     - ps aux | grep docker
     - groups
-    - docker build -t $IMAGE_NAME:$IMAGE_TAG .
-    - docker login -u $DOCKER_USER -p $DOCKER_PASS
+    - docker build -t $DOCKER_USER/$IMAGE_NAME:$IMAGE_TAG .
+    - echo "$DOCKER_PASS" | docker login -u $DOCKER_USER --password-stdin
     - docker push $DOCKER_USER/$IMAGE_NAME:$IMAGE_TAG
 test-task:
   stage: test
