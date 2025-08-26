@@ -29,5 +29,5 @@ deploy-task:
   stage: deploy
   script:
     - docker pull $DOCKER_USER/$IMAGE_NAME:$IMAGE_TAG
-    - docker start -p 9999:9999 $IMAGE_NAME
+    - docker run -d -p 9999:9999 --name gintest-server $IMAGE_NAME
 ...
