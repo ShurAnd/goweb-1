@@ -1,17 +1,22 @@
 ---
+variables:
+  IMAGE_TAG: "latest"
+
 stages:
   - build
   - test
   - deploy
 
-image: golang:1.24-alpine
+image: docker:latest
 
 build-task:
   stage: build
+  variables:
+    DOCKER_HOST: unix:///var/run/docker.sock
   script:
-    - go mod download
-    - CGO_ENABLED=0 GOOS=linux go build -o server
-
+    - docker build -t $IMAGE_NAME:$IMAGE_TAG .
+    - docker login -u $DOCKER_USER -p $DOCKER_PASS
+    - docker push $IMAGE_NAME:$IMAGE_TAG
 test-task:
   stage: test
   script:
