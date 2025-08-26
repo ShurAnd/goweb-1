@@ -4,12 +4,13 @@ stages:
   - test
   - deploy
 
-image: alpine:3.21
+image: golang:1.24-alpine
 
 build-task:
   stage: build
   script:
-    - echo "build"
+    - go mod download
+    - CGO_ENABLED=0 GOOS=linux go build -o server
 
 test-task:
   stage: test
@@ -19,5 +20,5 @@ test-task:
 deploy-task:
   stage: deploy
   script:
-    - echo "deploy"
+    - ls -la
 ...
