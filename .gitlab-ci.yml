@@ -14,6 +14,9 @@ build-task:
   variables:
     DOCKER_HOST: unix:///var/run/docker.sock
   script:
+    - ls -la /var/run/docker.sock
+    - ps aux | grep docker
+    - groups
     - docker build -t $IMAGE_NAME:$IMAGE_TAG .
     - docker login -u $DOCKER_USER -p $DOCKER_PASS
     - docker push $IMAGE_NAME:$IMAGE_TAG
