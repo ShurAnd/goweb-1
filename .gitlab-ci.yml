@@ -4,6 +4,7 @@ variables:
 #  IMAGE_TAG: $CI_COMMIT_SHORT_SHA
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   DOCKER_HOST: tcp://docker:2375
 <<<<<<< HEAD
@@ -14,6 +15,10 @@ variables:
 =======
   DOCKER_HOST: tcp://${DOCKER_SERVICE_HOST}:2375
 >>>>>>> b303b0e (change link to docker service ip)
+=======
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_DRIVER: overlay2
+>>>>>>> df90d4a (still fixing docker dind trouble)
 
 stages:
   - build
