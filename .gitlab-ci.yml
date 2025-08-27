@@ -2,6 +2,11 @@
 variables:
   IMAGE_TAG: "latest"
 #  IMAGE_TAG: $CI_COMMIT_SHORT_SHA
+<<<<<<< HEAD
+=======
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_TLS_CERTDIR: ""
+>>>>>>> a1da7da (attempt fix network troubles)
 
 stages:
   - build
@@ -12,7 +17,6 @@ image: docker:latest
 services:
   - name: docker:dind
     alias: docker
-    command: ["--tls=false", "--host=tcp://0.0.0.0:2375"]
 
 build-task:
   stage: build
