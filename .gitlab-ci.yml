@@ -12,15 +12,6 @@ image: docker:latest
 services:
   - docker:dind
 
-before_script:
-  - go mod download
-
-cache:
-  key: ${CI_COMMIT_REF_SLUG}
-  paths:
-    - $GOPATH/pkg/mod/
-  policy: pull-push
-
 build-task:
   stage: build
   variables:
