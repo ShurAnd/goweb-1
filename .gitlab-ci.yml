@@ -11,14 +11,14 @@ stages:
   - deploy
 
 image: docker:latest
-services:
-  - name: docker:dind
-    alias: docker
-    variables:
-      DOCKER_TLS_CERTDIR: ""
 
 build-task:
   stage: build
+  services:
+    - name: docker:dind
+      alias: docker
+      variables:
+        DOCKER_TLS_CERTDIR: ""
  # variables:
    # DOCKER_HOST: unix:///var/run/docker.sock
   script:
