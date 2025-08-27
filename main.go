@@ -78,7 +78,13 @@ func main() {
 		})
 	})
 
-	router.Run()
+	router.GET("/hello", func(context *gin.Context) {
+		clientIP := context.ClientIP()
+
+		context.String(http.StatusOK, "Hello %s", clientIP)
+	})
+
+	router.Run(":9999")
 }
 
 func getNextID() int {
