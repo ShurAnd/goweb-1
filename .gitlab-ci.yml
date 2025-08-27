@@ -5,8 +5,11 @@ variables:
 <<<<<<< HEAD
 =======
   DOCKER_HOST: tcp://docker:2375
+<<<<<<< HEAD
   DOCKER_TLS_CERTDIR: ""
 >>>>>>> a1da7da (attempt fix network troubles)
+=======
+>>>>>>> a5c920c (move var to services block)
 
 stages:
   - build
@@ -17,6 +20,8 @@ image: docker:latest
 services:
   - name: docker:dind
     alias: docker
+    variables:
+      DOCKER_TLS_CERTDIR: ""
 
 build-task:
   stage: build
