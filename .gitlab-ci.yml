@@ -2,26 +2,6 @@
 variables:
   IMAGE_TAG: "latest"
 #  IMAGE_TAG: $CI_COMMIT_SHORT_SHA
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-  DOCKER_HOST: tcp://docker:2375
-<<<<<<< HEAD
-  DOCKER_TLS_CERTDIR: ""
->>>>>>> a1da7da (attempt fix network troubles)
-=======
->>>>>>> a5c920c (move var to services block)
-=======
-  DOCKER_HOST: tcp://${DOCKER_SERVICE_HOST}:2375
->>>>>>> b303b0e (change link to docker service ip)
-=======
-  DOCKER_HOST: tcp://docker:2375
-  DOCKER_DRIVER: overlay2
->>>>>>> df90d4a (still fixing docker dind trouble)
-=======
->>>>>>> a3dafc0 (return socks var)
 
 stages:
   - build
@@ -32,23 +12,8 @@ image: docker:latest
 
 build-task:
   stage: build
-<<<<<<< HEAD
-<<<<<<< HEAD
   variables:
      DOCKER_HOST: unix:///var/run/docker.sock
-=======
-  services:
-    - name: docker:dind
-      alias: docker
-      variables:
-        DOCKER_TLS_CERTDIR: ""
- # variables:
-   # DOCKER_HOST: unix:///var/run/docker.sock
->>>>>>> 6d338c4 (move services block to build stage)
-=======
-  variables:
-     DOCKER_HOST: unix:///var/run/docker.sock
->>>>>>> a3dafc0 (return socks var)
   script:
     - docker build -t $DOCKER_USER/$IMAGE_NAME:$IMAGE_TAG .
     - echo "$DOCKER_PASS" | docker login -u $DOCKER_USER --password-stdin
@@ -61,15 +26,7 @@ test-task:
   stage: test
   script:
     - echo "test"
-<<<<<<< HEAD
-<<<<<<< HEAD
   needs: ["build-task"]
-=======
-  needs: ["build"]
->>>>>>> b0edee9 (done light version of pipe)
-=======
-  needs: ["build-task"]
->>>>>>> d87d683 (fix dependencies between tasks)
   only:
     - master
     - dev
@@ -80,15 +37,7 @@ deploy-task:
     - docker rm --force $IMAGE_NAME
     - docker pull $DOCKER_USER/$IMAGE_NAME:$IMAGE_TAG
     - docker run -d -p 9999:9999 --name $IMAGE_NAME $IMAGE_NAME
-<<<<<<< HEAD
-<<<<<<< HEAD
   needs: ["test-task"]
-=======
-  needs: ["test"]
->>>>>>> b0edee9 (done light version of pipe)
-=======
-  needs: ["test-task"]
->>>>>>> d87d683 (fix dependencies between tasks)
   only:
     - master
     - dev
