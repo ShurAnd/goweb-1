@@ -62,10 +62,14 @@ test-task:
   script:
     - echo "test"
 <<<<<<< HEAD
+<<<<<<< HEAD
   needs: ["build-task"]
 =======
   needs: ["build"]
 >>>>>>> b0edee9 (done light version of pipe)
+=======
+  needs: ["build-task"]
+>>>>>>> d87d683 (fix dependencies between tasks)
   only:
     - master
     - dev
@@ -77,10 +81,14 @@ deploy-task:
     - docker pull $DOCKER_USER/$IMAGE_NAME:$IMAGE_TAG
     - docker run -d -p 9999:9999 --name $IMAGE_NAME $IMAGE_NAME
 <<<<<<< HEAD
+<<<<<<< HEAD
   needs: ["test-task"]
 =======
   needs: ["test"]
 >>>>>>> b0edee9 (done light version of pipe)
+=======
+  needs: ["test-task"]
+>>>>>>> d87d683 (fix dependencies between tasks)
   only:
     - master
     - dev
