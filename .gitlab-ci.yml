@@ -1,0 +1,44 @@
+---
+variables:
+  IMAGE_TAG: "latest"
+#  IMAGE_TAG: $CI_COMMIT_SHORT_SHA
+
+stages:
+  - build
+  - test
+  - deploy
+
+image: docker:latest
+
+build-task:
+  stage: build
+  variables:
+     DOCKER_HOST: unix:///var/run/docker.sock
+  script:
+    - docker build -t $DOCKER_USER/$IMAGE_NAME:$IMAGE_TAG .
+    - echo "$DOCKER_PASS" | docker login -u $DOCKER_USER --password-stdin
+    - docker push $DOCKER_USER/$IMAGE_NAME:$IMAGE_TAG
+  only:
+    - master
+    - dev
+
+test-task:
+  stage: test
+  script:
+    - echo "test"
+  needs: ["build-task"]
+  only:
+    - master
+    - dev
+
+deploy-task:
+  stage: deploy
+  script:
+    - docker rm --force $IMAGE_NAME
+    - docker pull $DOCKER_USER/$IMAGE_NAME:$IMAGE_TAG
+    - docker run -d -p 9999:9999 --name $IMAGE_NAME $IMAGE_NAME
+  needs: ["test-task"]
+  only:
+    - master
+    - dev
+...
