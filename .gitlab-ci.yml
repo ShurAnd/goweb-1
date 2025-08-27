@@ -2,8 +2,6 @@
 variables:
   IMAGE_TAG: "latest"
 #  IMAGE_TAG: $CI_COMMIT_SHORT_SHA
-  DOCKER_HOST: tcp://docker:2375
-  DOCKER_DRIVER: overlay2
 
 stages:
   - build
@@ -14,13 +12,8 @@ image: docker:latest
 
 build-task:
   stage: build
-  services:
-    - name: docker:dind
-      alias: docker
-      variables:
-        DOCKER_TLS_CERTDIR: ""
- # variables:
-   # DOCKER_HOST: unix:///var/run/docker.sock
+  variables:
+     DOCKER_HOST: unix:///var/run/docker.sock
   script:
     - docker build -t $DOCKER_USER/$IMAGE_NAME:$IMAGE_TAG .
     - echo "$DOCKER_PASS" | docker login -u $DOCKER_USER --password-stdin
