@@ -10,13 +10,15 @@ stages:
 
 image: docker:latest
 
+before_script:
+  - echo "$DOCKER_PASS" | docker login -u $DOCKER_USER --password-stdin
+
 build-task:
   stage: build
   variables:
      DOCKER_HOST: unix:///var/run/docker.sock
   script:
     - docker build -t $DOCKER_USER/$IMAGE_NAME:$IMAGE_TAG .
-    - echo "$DOCKER_PASS" | docker login -u $DOCKER_USER --password-stdin
     - docker push $DOCKER_USER/$IMAGE_NAME:$IMAGE_TAG
   only:
     - master
