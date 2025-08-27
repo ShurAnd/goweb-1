@@ -38,7 +38,7 @@ deploy-task:
   script:
     - docker rm --force $IMAGE_NAME
     - docker pull $DOCKER_USER/$IMAGE_NAME:$IMAGE_TAG
-    - docker run -d -p 9999:9999 --name $IMAGE_NAME $IMAGE_NAME
+    - docker run -d -p 9999:9999 --name $IMAGE_NAME $DOCKER_USER/$IMAGE_NAME
   needs: ["test-task"]
   only:
     - master
