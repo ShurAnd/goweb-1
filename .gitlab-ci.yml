@@ -5,6 +5,7 @@ variables:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   DOCKER_HOST: tcp://docker:2375
 <<<<<<< HEAD
@@ -19,6 +20,8 @@ variables:
   DOCKER_HOST: tcp://docker:2375
   DOCKER_DRIVER: overlay2
 >>>>>>> df90d4a (still fixing docker dind trouble)
+=======
+>>>>>>> a3dafc0 (return socks var)
 
 stages:
   - build
@@ -29,6 +32,7 @@ image: docker:latest
 
 build-task:
   stage: build
+<<<<<<< HEAD
 <<<<<<< HEAD
   variables:
      DOCKER_HOST: unix:///var/run/docker.sock
@@ -41,6 +45,10 @@ build-task:
  # variables:
    # DOCKER_HOST: unix:///var/run/docker.sock
 >>>>>>> 6d338c4 (move services block to build stage)
+=======
+  variables:
+     DOCKER_HOST: unix:///var/run/docker.sock
+>>>>>>> a3dafc0 (return socks var)
   script:
     - docker build -t $DOCKER_USER/$IMAGE_NAME:$IMAGE_TAG .
     - echo "$DOCKER_PASS" | docker login -u $DOCKER_USER --password-stdin
