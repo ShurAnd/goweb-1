@@ -11,7 +11,7 @@ stages:
 
 image: docker:latest
 services:
-  - docker:dind
+  - name: docker:dind
     alias: docker
     command: ["--tls=false", "--host=tcp://0.0.0.0:2375"]
 
