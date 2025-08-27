@@ -26,16 +26,21 @@ stages:
   - deploy
 
 image: docker:latest
-services:
-  - name: docker:dind
-    alias: docker
-    variables:
-      DOCKER_TLS_CERTDIR: ""
 
 build-task:
   stage: build
+<<<<<<< HEAD
   variables:
      DOCKER_HOST: unix:///var/run/docker.sock
+=======
+  services:
+    - name: docker:dind
+      alias: docker
+      variables:
+        DOCKER_TLS_CERTDIR: ""
+ # variables:
+   # DOCKER_HOST: unix:///var/run/docker.sock
+>>>>>>> 6d338c4 (move services block to build stage)
   script:
     - docker build -t $DOCKER_USER/$IMAGE_NAME:$IMAGE_TAG .
     - echo "$DOCKER_PASS" | docker login -u $DOCKER_USER --password-stdin
