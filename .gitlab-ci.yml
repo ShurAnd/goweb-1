@@ -59,11 +59,7 @@ code_quality:
         - gl-code-quality-report.json
         - unit_test_results.xml
       when: always
-
     needs: ["build-task"]
-    only:
-      - master
-      - dev
 
 test-task:
   stage: test
