@@ -57,6 +57,11 @@ code_quality:
         - unit_test_results.xml
       when: always
 
+    needs: ["build-task"]
+    only:
+      - master
+      - dev
+
 test-task:
   stage: test
   script:
