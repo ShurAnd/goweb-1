@@ -54,6 +54,7 @@ code_quality:
         junit: unit_test_results.xml
       paths:
         - gl-code-quality-report.json
+        - unit_test_results.xml
       when: always
 
 test-task:
