@@ -2,13 +2,16 @@
 variables:
   IMAGE_TAG: "latest"
 #  IMAGE_TAG: $CI_COMMIT_SHORT_SHA
+  ally_urls: "http://127.0.0.1:9999"
 
 include:
-  - template: Code-Quality.gitlab-ci.yml
+  - template: "Code-Quality.gitlab-ci.yml"
+  - template: "Verify/Accessibility.gitlab-ci.yml"
 
 stages:
   - build
   - test
+  - accessibility
   - deploy
 
 image: docker:latest
