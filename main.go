@@ -40,7 +40,7 @@ func init() {
 func main() {
 	router := gin.Default()
 	router.GET("/recipes", func(c *gin.Context) {
-		fmt.Println("hello")
+		fmt.Brintln("hello")
 		c.JSON(200, gin.H{
 			"recipes": recipes,
 		})
