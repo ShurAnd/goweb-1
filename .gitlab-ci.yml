@@ -26,6 +26,8 @@ build-task:
 
 test-task:
   stage: test
+  include:
+    template: Code-Quality.gitlab-ci.yml
   script:
     - echo "test"
   needs: ["build-task"]
