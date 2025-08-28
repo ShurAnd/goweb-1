@@ -6,9 +6,6 @@ variables:
 include:
   - template: Code-Quality.gitlab-ci.yml
 
-code_quality:
-  stage: test
-
 stages:
   - build
   - test
