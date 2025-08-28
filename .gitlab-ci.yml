@@ -3,6 +3,12 @@ variables:
   IMAGE_TAG: "latest"
 #  IMAGE_TAG: $CI_COMMIT_SHORT_SHA
 
+include:
+  - template: Code-Quality.gitlab-ci.yml
+
+code_quality:
+  stage: test
+
 stages:
   - build
   - test
@@ -26,8 +32,6 @@ build-task:
 
 test-task:
   stage: test
-  include:
-    template: Code-Quality.gitlab-ci.yml
   script:
     - echo "test"
   needs: ["build-task"]
