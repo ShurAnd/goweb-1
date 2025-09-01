@@ -2,7 +2,7 @@
 variables:
   IMAGE_TAG: "latest"
 #  IMAGE_TAG: $CI_COMMIT_SHORT_SHA
-  ally_urls: "http://127.0.0.1:9999"
+  a11y_urls: "http://127.0.0.1:9999"
 
 include:
   - template: "Code-Quality.gitlab-ci.yml"
@@ -65,16 +65,13 @@ code_quality:
     needs: ["build-task"]
 
 a11y:
-  variables:
-    a11y_urls: "http://127.0.0.1:9999/recipes"
   artifacts:
     reports:
       accessibility: gl-accessibility-report.json
     paths:
-      - gl-accessibility-report.json
+      - "$CI_PROJECT_DIR/gl-accessibility-report.json"
   after_script:
-    - "echo CURRENT DIRECTORY: $PWD"
-    - cd /builds/goweb/pc-version/goweb-1
+    - cd $CI_PROJECT_DIR
 
 secret_detection:
   variables:
@@ -84,10 +81,9 @@ secret_detection:
     reports:
       secret_detection: gl-secret-detection-report.json
     paths:
-      - gl-secret-detection-report.json
+      - "$CI_PROJECT_DIR/gl-secret-detection-report.json"
   after_script:
-    - "echo CURRENT DIRECTORY: $PWD"
-    - cd /builds/goweb/pc-version/goweb-1
+    - cd $CI_PROJECT_DIR
 
 sast:
   variables:
@@ -96,10 +92,9 @@ sast:
     reports:
       sast: gl-sast-report.json
     paths:
-      - gl-sast-report.json
+      - "$CI_PROJECT_DIR/gl-sast-report.json"
   after_script:
-    - "echo CURRENT DIRECTORY: $PWD"
-    - cd /builds/goweb/pc-version/goweb-1
+    - cd $CI_PROJECT_DIR
 
 dependency_scanning:
   variables:
@@ -108,10 +103,9 @@ dependency_scanning:
     reports:
       dependency_scanning: gl-dependency-scanning-report.json
     paths:
-      - gl-dependency-scanning-report.json
+      - "$CI_PROJECT_DIR/gl-dependency-scanning-report.json"
   after_script:
-    - "echo CURRENT DIRECTORY: $PWD"
-    - cd /builds/goweb/pc-version/goweb-1
+    - cd $CI_PROJECT_DIR
 
 test-task:
   stage: test
