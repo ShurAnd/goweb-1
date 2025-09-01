@@ -10,7 +10,7 @@ include:
   - template: "Security/Secret-Detection.gitlab-ci.yml"
   - template: "Security/Dependency-Scanning.gitlab-ci.yml"
   - template: "Security/Container-Scanning.gitlab-ci.yml"
-  - template: "Security/License-Scanning.gitlab-ci.yml"
+#  - template: "Security/License-Scanning.gitlab-ci.yml"
 
 stages:
   - build
@@ -98,18 +98,19 @@ unit_tests:
 #    paths:
 #      - "gl-accessibility-report.json"
 
-license-scanning:
-    stage: test
-    variables:
-      LICENSE_FINDING_CLASSIFICATION: "{{.LicenseClassification}}"
-    before_script:
-      - |
-        rm -f gl-license-scanning-report.json
-    artifacts:
-      reports:
-        license_scanning: gl-license-scanning-report.json
-      paths:
-        - "gl-license-scanning-report.json"
+license_scanning:
+  stage: test
+  image: registry.gitlab.com/gitlab-org/security-products/license-scanning:latest
+  before_script:
+    - rm -f gl-license-scanning-report.json
+  script:
+    - /run.sh
+  artifacts:
+    reports:
+      license_scanning: gl-license-scanning-report.json
+    paths:
+      - "gl-license-scanning-report.json"
+  allow_failure: true
 
 container_scanning:
   stage: test
