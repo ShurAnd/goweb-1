@@ -7,6 +7,9 @@ variables:
 include:
   - template: "Code-Quality.gitlab-ci.yml"
   - template: "Verify/Accessibility.gitlab-ci.yml"
+  - template: "Security/SAST.gitlab-ci.yml"
+  - template: "Security/Secret-Detection.gitlab-ci.yml"
+  - template: "Security/Dependency-Scanning.gitlab-ci.yml"
 
 stages:
   - build
@@ -60,6 +63,10 @@ code_quality:
         - unit_test_results.xml
       when: always
     needs: ["build-task"]
+
+a11y:
+  variables:
+    a11y_urls: "http://127.0.0.1:9999/recipes"
 
 test-task:
   stage: test
