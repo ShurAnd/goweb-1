@@ -76,6 +76,7 @@ a11y:
 secret_detection:
   variables:
     SECRET_DETECTION_HISTORIC_SCAN: "true"
+    CI_DEBUG_TRACE: "true"
   artifacts:
     reports:
       secret_detection: gl-secret-detection-report.json
@@ -86,7 +87,8 @@ secret_detection:
     - 'find . -name "*.json" 2>/dev/null'
 
 sast:
-  image: docker:latest
+  variables:
+    CI_DEBUG_TRACE: "true"
   artifacts:
     reports:
       sast: gl-sast-report.json
@@ -94,12 +96,13 @@ sast:
       - gl-sast-report.json
 
 dependency_scanning:
+  variables:
+    CI_DEBUG_TRACE: "true"
   artifacts:
     reports:
       dependency_scanning: gl-dependency-scanning-report.json
     paths:
       - gl-dependency-scanning-report.json
-
 
 test-task:
   stage: test
