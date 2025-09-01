@@ -118,17 +118,18 @@ a11y:
     - cd $CI_PROJECT_DIR
 
 secret_detection:
-  #extends: .create_empty_report
   variables:
-    REPORT_FILENAME: "gl-secret-detection-report.json"
-    SCANNER_NAME: "GitLab Secret Detection Scanner"
     SECRET_DETECTION_HISTORIC_SCAN: "true"
     CI_DEBUG_TRACE: "true"
+  before_script:
+    - |
+      # Удаляем файл если он существует
+      rm -f gl-secret-detection-report.json
   artifacts:
     reports:
       secret_detection: gl-secret-detection-report.json
     paths:
-      - "$CI_PROJECT_DIR/gl-secret-detection-report.json"
+      - "gl-secret-detection-report.json"
   after_script:
     - cd $CI_PROJECT_DIR
 
@@ -146,18 +147,17 @@ sast:
       - "gl-sast-report.json"
 
 dependency_scanning:
-  #extends: .create_empty_report
   variables:
-    REPORT_FILENAME: "gl-dependency-scanning-report.json"
-    SCANNER_NAME: "GitLab Dependency Scanning Scanner"
     CI_DEBUG_TRACE: "true"
+  before_script:
+    - |
+      # Удаляем файл если он существует
+      rm -f gl-dependency-scanning-report.json
   artifacts:
     reports:
       dependency_scanning: gl-dependency-scanning-report.json
     paths:
-      - "$CI_PROJECT_DIR/gl-dependency-scanning-report.json"
-  after_script:
-    - cd $CI_PROJECT_DIR
+      - "gl-dependency-scanning-report.json"
 
 test-task:
   stage: test
