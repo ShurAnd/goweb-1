@@ -144,7 +144,6 @@ sast:
       - "$CI_PROJECT_DIR/gl-sast-report.json"
   after_script:
     - |
-      cd $CI_PROJECT_DIR
       REPORT_FILE="$REPORT_FILENAME"
       echo "Test extends block without extends"
       if [ ! -f "$REPORT_FILE" ]; then
