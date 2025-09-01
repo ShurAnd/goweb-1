@@ -61,31 +61,52 @@ code_quality:
     image: golang:1.24-alpine
     before_script:
       - apk add --no-cache jq
-      - go install github.com/fzipp/gocyclo/cmd/gocyclo@latest
-      - go install golang.org/x/lint/golint@latest
-      - go install github.com/go-critic/go-critic/cmd/gocritic@latest
-      - go install honnef.co/go/tools/cmd/staticcheck@latest
-      - go install github.com/jstemmer/go-junit-report@latest
     script:
       - echo '[]' > gl-code-quality-report.json
-      - go vet ./... || true
-      - staticcheck ./... || true
-      - gocritic check ./... || true
       -  | 
        if [ $(find . -name "*_test.go" | wc -l) -eq 0 ]; then 
        jq '. += [{"description": "No tests found", "severity": "major", "fingerprint": "no-tests", "location": { "path": ".", "lines": { "begin": 1 } } } ]' gl-code-quality-report.json > tmp.json && mv tmp.json gl-code-quality-report.json 
        fi
-        
-      - go test -v ./... 2>&1 | go-junit-report > unit_test_results.xml || true
     artifacts:
       reports:
         codequality: gl-code-quality-report.json
-        junit: unit_test_results.xml
       paths:
         - gl-code-quality-report.json
-        - unit_test_results.xml
       when: always
     needs: ["build-task"]
+
+static_analysis:
+  image: golang:1.24-alpine
+  before_script:
+    - go install github.com/fzipp/gocyclo/cmd/gocyclo@latest
+    - go install golang.org/x/lint/golint@latest
+    - go install github.com/go-critic/go-critic/cmd/gocritic@latest
+    - go install honnef.co/go/tools/cmd/staticcheck@latest
+  script:
+    - go vet ./... || true
+    - staticcheck ./... || true
+    - gocritic check ./... || true
+    - gocyclo -over 15 . || true
+  needs: ["build-task"]
+  only:
+    - master
+  #  - dev
+
+unit_tests:
+  image: golang:1.24-alpine
+  before_script:
+    - go install github.com/jstemmer/go-junit-report@latest
+  script:
+    - go test -v ./... 2>&1 | go-junit-report > unit_test_results.xml || true
+  artifacts:
+    reports:
+      junit: unit_test_results.xml
+    paths:
+      - unit_test_results.xml
+  needs: ["build-task"]
+  only:
+    - master
+  #  - dev
 
 a11y:
   artifacts:
