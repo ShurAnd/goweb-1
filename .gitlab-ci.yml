@@ -2,7 +2,6 @@
 variables:
   IMAGE_TAG: "latest"
 #  IMAGE_TAG: $CI_COMMIT_SHORT_SHA
-  a11y_urls: "http://127.0.0.1:9999"
 
 include:
   - template: "Code-Quality.gitlab-ci.yml"
@@ -21,29 +20,6 @@ image: docker:latest
 
 before_script:
   - echo "$DOCKER_PASS" | docker login -u $DOCKER_USER --password-stdin
-
-.create_empty_report:
-  after_script:
-    - |
-      REPORT_FILE="$REPORT_FILENAME"
-      echo "Test extends block within extends"
-      if [ ! -f "$REPORT_FILE" ]; then
-        echo "Creating empty report: $REPORT_FILE"
-        echo '{
-          "version": "2.0",
-          "vulnerabilities": [],
-          "remediations": [],
-          "scan": {
-            "scanner": {
-              "name": "'"${SCANNER_NAME}"'",
-              "version": "'"${CI_SERVER_VERSION:-unknown}"'"
-            },
-            "start_time": "'"$(date -u +"%Y-%m-%dT%H:%M:%SZ")"'",
-            "end_time": "'"$(date -u +"%Y-%m-%dT%H:%M:%SZ")"'",
-            "status": "success"
-          }
-        }' > "$REPORT_FILE"
-      fi
 
 build-task:
   stage: build
@@ -109,13 +85,16 @@ unit_tests:
   #  - dev
 
 a11y:
+  variables:
+    a11y_urls: "http://127.0.0.1:9999"
+  before_script:
+    - |
+      rm -f gl-accessibility-report.json
   artifacts:
     reports:
       accessibility: gl-accessibility-report.json
     paths:
-      - "$CI_PROJECT_DIR/gl-accessibility-report.json"
-  after_script:
-    - cd $CI_PROJECT_DIR
+      - "gl-accessibility-report.json"
 
 secret_detection:
   variables:
@@ -123,7 +102,6 @@ secret_detection:
     CI_DEBUG_TRACE: "true"
   before_script:
     - |
-      # Удаляем файл если он существует
       rm -f gl-secret-detection-report.json
   artifacts:
     reports:
@@ -138,7 +116,6 @@ sast:
     CI_DEBUG_TRACE: "true"
   before_script:
     - |
-      # Удаляем файл если он существует
       rm -f gl-sast-report.json
   artifacts:
     reports:
@@ -151,7 +128,6 @@ dependency_scanning:
     CI_DEBUG_TRACE: "true"
   before_script:
     - |
-      # Удаляем файл если он существует
       rm -f gl-dependency-scanning-report.json
   artifacts:
     reports:
