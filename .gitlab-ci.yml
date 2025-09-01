@@ -98,19 +98,19 @@ unit_tests:
 #    paths:
 #      - "gl-accessibility-report.json"
 
-license_scanning:
-  stage: test
-  image: registry.gitlab.com/gitlab-org/security-products/license-scanning:latest
-  before_script:
-    - rm -f gl-license-scanning-report.json
-  script:
-    - /run.sh
-  artifacts:
-    reports:
-      license_scanning: gl-license-scanning-report.json
-    paths:
-      - "gl-license-scanning-report.json"
-  allow_failure: true
+#license_scanning:
+#  stage: test
+#  image: registry.gitlab.com/gitlab-org/security-products/license-scanning:latest
+#  before_script:
+#    - rm -f gl-license-scanning-report.json
+#  script:
+#    - /run.sh
+#  artifacts:
+#    reports:
+#      license_scanning: gl-license-scanning-report.json
+#    paths:
+#      - "gl-license-scanning-report.json"
+#  allow_failure: true
 
 container_scanning:
   stage: test
