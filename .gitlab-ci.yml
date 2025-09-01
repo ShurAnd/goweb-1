@@ -99,6 +99,8 @@ unit_tests:
 
 container_scanning:
   stage: test
+  variables:
+    CS_IMAGE: "docker.io/$DOCKER_USER/$IMAGE_NAME:$IMAGE_TAG"
   before_script:
     - |
       rm -f gl-container-scanning-report.json
