@@ -67,6 +67,38 @@ code_quality:
 a11y:
   variables:
     a11y_urls: "http://127.0.0.1:9999/recipes"
+  artifacts:
+    reports:
+      accessibility: gl-accessibility-report.json
+    paths:
+      - gl-accessibility-report.json
+
+secret_detection:
+  variables:
+    SECRET_DETECTION_HISTORIC_SCAN: "true"
+  artifacts:
+    reports:
+      secret_detection: gl-secret-detection-report.json
+    paths:
+      - gl-secret-detection-report.json
+    script:
+      - echo "SECRET DETECTION in: $PWD"
+      - find . -name "*.json" 2>/dev/null
+
+sast:
+  artifacts:
+    reports:
+      sast: gl-sast-report.json
+    paths:
+      - gl-sast-report.json
+
+dependency_scanning:
+  artifacts:
+    reports:
+      dependency_scanning: gl-dependency-scanning-report.json
+    paths:
+      - gl-dependency-scanning-report.json
+
 
 test-task:
   stage: test
