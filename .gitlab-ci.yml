@@ -108,8 +108,6 @@ secret_detection:
       secret_detection: gl-secret-detection-report.json
     paths:
       - "gl-secret-detection-report.json"
-  after_script:
-    - cd $CI_PROJECT_DIR
 
 sast:
   variables:
