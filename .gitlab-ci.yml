@@ -4,11 +4,16 @@ variables:
 #  IMAGE_TAG: $CI_COMMIT_SHORT_SHA
 
 include:
-  - template: Code-Quality.gitlab-ci.yml
+  - template: "Code-Quality.gitlab-ci.yml"
+#  - template: "Verify/Accessibility.gitlab-ci.yml"
+  - template: "Security/SAST.gitlab-ci.yml"
+  - template: "Security/Secret-Detection.gitlab-ci.yml"
+  - template: "Security/Dependency-Scanning.gitlab-ci.yml"
 
 stages:
   - build
   - test
+  - accessibility
   - deploy
 
 image: docker:latest
@@ -32,15 +37,8 @@ code_quality:
     image: golang:1.24-alpine
     before_script:
       - apk add --no-cache jq
-      - go install github.com/fzipp/gocyclo/cmd/gocyclo@latest
-      - go install golang.org/x/lint/golint@latest
-      - go install github.com/go-critic/go-critic/cmd/gocritic@latest
-      - go install honnef.co/go/tools/cmd/staticcheck@latest
     script:
       - echo '[]' > gl-code-quality-report.json
-      - go vet ./... || true
-      - staticcheck ./... || true
-      - gocritic check ./... || true
       -  | 
        if [ $(find . -name "*_test.go" | wc -l) -eq 0 ]; then 
        jq '. += [{"description": "No tests found", "severity": "major", "fingerprint": "no-tests", "location": { "path": ".", "lines": { "begin": 1 } } } ]' gl-code-quality-report.json > tmp.json && mv tmp.json gl-code-quality-report.json 
@@ -50,6 +48,92 @@ code_quality:
         codequality: gl-code-quality-report.json
       paths:
         - gl-code-quality-report.json
+      when: always
+    needs: ["build-task"]
+
+static_analysis:
+  image: golang:1.24-alpine
+  before_script:
+    - go install github.com/fzipp/gocyclo/cmd/gocyclo@latest
+    - go install golang.org/x/lint/golint@latest
+    - go install github.com/go-critic/go-critic/cmd/gocritic@latest
+    - go install honnef.co/go/tools/cmd/staticcheck@latest
+  script:
+    - go vet ./... || true
+    - staticcheck ./... || true
+    - gocritic check ./... || true
+    - gocyclo -over 15 . || true
+  needs: ["build-task"]
+  only:
+    - master
+  #  - dev
+
+unit_tests:
+  image: golang:1.24-alpine
+  before_script:
+    - go install github.com/jstemmer/go-junit-report@latest
+  script:
+    - go test -v ./... 2>&1 | go-junit-report > unit_test_results.xml || true
+  artifacts:
+    reports:
+      junit: unit_test_results.xml
+    paths:
+      - unit_test_results.xml
+  needs: ["build-task"]
+  only:
+    - master
+  #  - dev
+
+#a11y:
+#  variables:
+#    a11y_urls: "http://127.0.0.1:9999"
+#  before_script:
+#    - |
+#      rm -f gl-accessibility-report.json
+#  artifacts:
+#    reports:
+#      accessibility: gl-accessibility-report.json
+#    paths:
+#      - "gl-accessibility-report.json"
+
+secret_detection:
+  variables:
+    SECRET_DETECTION_HISTORIC_SCAN: "true"
+    CI_DEBUG_TRACE: "true"
+  before_script:
+    - |
+      rm -f gl-secret-detection-report.json
+  artifacts:
+    reports:
+      secret_detection: gl-secret-detection-report.json
+    paths:
+      - "gl-secret-detection-report.json"
+  after_script:
+    - cd $CI_PROJECT_DIR
+
+sast:
+  variables:
+    CI_DEBUG_TRACE: "true"
+  before_script:
+    - |
+      rm -f gl-sast-report.json
+  artifacts:
+    reports:
+      sast: gl-sast-report.json
+    paths:
+      - "gl-sast-report.json"
+
+dependency_scanning:
+  variables:
+    CI_DEBUG_TRACE: "true"
+  before_script:
+    - |
+      rm -f gl-dependency-scanning-report.json
+  artifacts:
+    reports:
+      dependency_scanning: gl-dependency-scanning-report.json
+    paths:
+      - "gl-dependency-scanning-report.json"
 
 test-task:
   stage: test
