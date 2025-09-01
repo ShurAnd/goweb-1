@@ -9,6 +9,7 @@ include:
   - template: "Security/SAST.gitlab-ci.yml"
   - template: "Security/Secret-Detection.gitlab-ci.yml"
   - template: "Security/Dependency-Scanning.gitlab-ci.yml"
+  - template: "Security/Container-Scanning.gitlab-ci.yml"
 
 stages:
   - build
@@ -96,7 +97,20 @@ unit_tests:
 #    paths:
 #      - "gl-accessibility-report.json"
 
+container_scanning:
+  stage: test
+  before_script:
+    - |
+      rm -f gl-container-scanning-report.json
+  artifacts:
+    reports:
+      codequality: gl-container-scanning-report.json
+    paths:
+      - "gl-container-scanning-report.json"
+  needs: [ "build-task" ]
+
 secret_detection:
+  stage: test
   variables:
     SECRET_DETECTION_HISTORIC_SCAN: "true"
     CI_DEBUG_TRACE: "true"
@@ -110,6 +124,7 @@ secret_detection:
       - "gl-secret-detection-report.json"
 
 sast:
+  stage: test
   variables:
     CI_DEBUG_TRACE: "true"
   before_script:
@@ -122,6 +137,7 @@ sast:
       - "gl-sast-report.json"
 
 dependency_scanning:
+  stage: test
   variables:
     CI_DEBUG_TRACE: "true"
   before_script:
