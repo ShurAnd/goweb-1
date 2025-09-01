@@ -71,7 +71,10 @@ a11y:
     reports:
       accessibility: gl-accessibility-report.json
     paths:
-      - ./gl-accessibility-report.json
+      - gl-accessibility-report.json
+  after_script:
+    - "echo CURRENT DIRECTORY: $PWD"
+    - cd /builds/goweb/pc-version/goweb-1
 
 secret_detection:
   variables:
@@ -81,10 +84,10 @@ secret_detection:
     reports:
       secret_detection: gl-secret-detection-report.json
     paths:
-      - ./gl-secret-detection-report.json
-  script:
-    - "echo SECRET DETECTION in: $PWD"
-    - 'find . -name "*.json" 2>/dev/null'
+      - gl-secret-detection-report.json
+  after_script:
+    - "echo CURRENT DIRECTORY: $PWD"
+    - cd /builds/goweb/pc-version/goweb-1
 
 sast:
   variables:
@@ -93,7 +96,10 @@ sast:
     reports:
       sast: gl-sast-report.json
     paths:
-      - ./gl-sast-report.json
+      - gl-sast-report.json
+  after_script:
+    - "echo CURRENT DIRECTORY: $PWD"
+    - cd /builds/goweb/pc-version/goweb-1
 
 dependency_scanning:
   variables:
@@ -102,7 +108,10 @@ dependency_scanning:
     reports:
       dependency_scanning: gl-dependency-scanning-report.json
     paths:
-      - ./gl-dependency-scanning-report.json
+      - gl-dependency-scanning-report.json
+  after_script:
+    - "echo CURRENT DIRECTORY: $PWD"
+    - cd /builds/goweb/pc-version/goweb-1
 
 test-task:
   stage: test
