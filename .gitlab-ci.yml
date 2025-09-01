@@ -81,9 +81,9 @@ secret_detection:
       secret_detection: gl-secret-detection-report.json
     paths:
       - gl-secret-detection-report.json
-    script:
-      - echo "SECRET DETECTION in: $PWD"
-      - find . -name "*.json" 2>/dev/null
+  script:
+    - echo "SECRET DETECTION in: $PWD"
+    - find . -name "*.json" 2>/dev/null
 
 sast:
   artifacts:
