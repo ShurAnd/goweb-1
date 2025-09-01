@@ -97,7 +97,7 @@ a11y:
     - cd $CI_PROJECT_DIR
 
 secret_detection:
-  extends: .create_empty_report
+  #extends: .create_empty_report
   variables:
     REPORT_FILENAME: "gl-secret-detection-report.json"
     SCANNER_NAME: "GitLab Secret Detection Scanner"
@@ -145,7 +145,7 @@ sast:
       fi
 
 dependency_scanning:
-  extends: .create_empty_report
+  #extends: .create_empty_report
   variables:
     REPORT_FILENAME: "gl-dependency-scanning-report.json"
     SCANNER_NAME: "GitLab Dependency Scanning Scanner"
