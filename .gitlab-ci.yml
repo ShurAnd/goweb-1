@@ -86,6 +86,7 @@ secret_detection:
     - 'find . -name "*.json" 2>/dev/null'
 
 sast:
+  image: docker:latest
   artifacts:
     reports:
       sast: gl-sast-report.json
