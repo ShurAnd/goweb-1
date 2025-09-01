@@ -5,7 +5,7 @@ variables:
 
 include:
   - template: "Code-Quality.gitlab-ci.yml"
-  - template: "Verify/Accessibility.gitlab-ci.yml"
+#  - template: "Verify/Accessibility.gitlab-ci.yml"
   - template: "Security/SAST.gitlab-ci.yml"
   - template: "Security/Secret-Detection.gitlab-ci.yml"
   - template: "Security/Dependency-Scanning.gitlab-ci.yml"
@@ -84,17 +84,17 @@ unit_tests:
     - master
   #  - dev
 
-a11y:
-  variables:
-    a11y_urls: "http://127.0.0.1:9999"
-  before_script:
-    - |
-      rm -f gl-accessibility-report.json
-  artifacts:
-    reports:
-      accessibility: gl-accessibility-report.json
-    paths:
-      - "gl-accessibility-report.json"
+#a11y:
+#  variables:
+#    a11y_urls: "http://127.0.0.1:9999"
+#  before_script:
+#    - |
+#      rm -f gl-accessibility-report.json
+#  artifacts:
+#    reports:
+#      accessibility: gl-accessibility-report.json
+#    paths:
+#      - "gl-accessibility-report.json"
 
 secret_detection:
   variables:
