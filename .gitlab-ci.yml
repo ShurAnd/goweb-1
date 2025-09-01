@@ -71,7 +71,10 @@ a11y:
     reports:
       accessibility: gl-accessibility-report.json
     paths:
-      - gl-accessibility-report.json
+      - ./gl-accessibility-report.json
+  only:
+    - master
+    - dev
 
 secret_detection:
   variables:
@@ -81,10 +84,13 @@ secret_detection:
     reports:
       secret_detection: gl-secret-detection-report.json
     paths:
-      - gl-secret-detection-report.json
+      - ./gl-secret-detection-report.json
   script:
     - "echo SECRET DETECTION in: $PWD"
     - 'find . -name "*.json" 2>/dev/null'
+  only:
+    - master
+    - dev
 
 sast:
   variables:
@@ -93,7 +99,10 @@ sast:
     reports:
       sast: gl-sast-report.json
     paths:
-      - gl-sast-report.json
+      - ./gl-sast-report.json
+  only:
+    - master
+    - dev
 
 dependency_scanning:
   variables:
@@ -102,7 +111,10 @@ dependency_scanning:
     reports:
       dependency_scanning: gl-dependency-scanning-report.json
     paths:
-      - gl-dependency-scanning-report.json
+      - ./gl-dependency-scanning-report.json
+  only:
+    - master
+    - dev
 
 test-task:
   stage: test
