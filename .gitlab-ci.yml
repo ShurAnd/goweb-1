@@ -10,6 +10,7 @@ include:
   - template: "Security/Secret-Detection.gitlab-ci.yml"
   - template: "Security/Dependency-Scanning.gitlab-ci.yml"
   - template: "Security/Container-Scanning.gitlab-ci.yml"
+  - template: "Security/SAST-IaC.latest.gitlab-ci.yml"
 #  - template: "Security/License-Scanning.gitlab-ci.yml"
 
 stages:
@@ -111,6 +112,18 @@ unit_tests:
 #    paths:
 #      - "gl-license-scanning-report.json"
 #  allow_failure: true
+
+iac-scanning:
+  stage: test
+  variables:
+    SAST_IAC_DOCKERFILE_ENABLED: "true"
+  before_script:
+    - rm -f gl-iac-sast-report.json
+  artifacts:
+    reports:
+      sast_iac: gl-iac-sast-report.json
+    paths:
+      - "gl-iac-sast-report.json"
 
 container_scanning:
   stage: test
