@@ -159,9 +159,6 @@ secret_detection:
   variables:
     SECRET_DETECTION_HISTORIC_SCAN: "true"
     CI_DEBUG_TRACE: "true"
-  before_script:
-    - |
-      rm -f gl-secret-detection-report.json
   artifacts:
     reports:
       secret_detection: gl-secret-detection-report.json
