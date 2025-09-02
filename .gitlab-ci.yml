@@ -128,6 +128,8 @@ iac-scanning:
 container_scanning:
   stage: test
   variables:
+    CS_REGISTRY_USER: $DOCKER_USER
+    CS_REGISTRY_PASSWORD: $DOCKER_PASS
     CS_IMAGE: "docker.io/$DOCKER_USER/$IMAGE_NAME:$IMAGE_TAG"
   before_script:
     - |
