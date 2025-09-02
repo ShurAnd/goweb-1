@@ -131,8 +131,6 @@ iac-sast:
   stage: test
   variables:
     SAST_IAC_DOCKERFILE_ENABLED: "true"
-  before_script:
-    - rm -f gl-iac-sast-report.json
   artifacts:
     paths:
       - "gl-iac-sast-report.json"
