@@ -113,15 +113,13 @@ unit_tests:
 #      - "gl-license-scanning-report.json"
 #  allow_failure: true
 
-iac-scanning:
+iac-sast:
   stage: test
   variables:
     SAST_IAC_DOCKERFILE_ENABLED: "true"
   before_script:
     - rm -f gl-iac-sast-report.json
   artifacts:
-    reports:
-      sast_iac: gl-iac-sast-report.json
     paths:
       - "gl-iac-sast-report.json"
 
