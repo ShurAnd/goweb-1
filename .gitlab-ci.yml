@@ -31,6 +31,12 @@ build-task:
   script:
     - docker build -t $DOCKER_USER/$IMAGE_NAME:$IMAGE_TAG .
     - docker push $DOCKER_USER/$IMAGE_NAME:$IMAGE_TAG
+    - CGO_ENABLED=0 GOOS=linux go build -o server_lin
+    - CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -o server.exe
+  artifacts:
+    paths:
+      - server_lin
+      - server.exe
   only:
     - master
     - dev
