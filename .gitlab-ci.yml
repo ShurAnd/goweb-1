@@ -24,14 +24,21 @@ image: docker:latest
 before_script:
   - echo "$DOCKER_PASS" | docker login -u $DOCKER_USER --password-stdin
 
-build-task:
-  image: golang:1.24-alpine
+build-docker-task:
   stage: build
   variables:
      DOCKER_HOST: unix:///var/run/docker.sock
   script:
     - docker build -t $DOCKER_USER/$IMAGE_NAME:$IMAGE_TAG .
     - docker push $DOCKER_USER/$IMAGE_NAME:$IMAGE_TAG
+  only:
+    - master
+    - dev
+
+build-packages-task:
+  stage: build
+  image: golang:1.24-alpine
+  script:
     - CGO_ENABLED=0 GOOS=linux go build -o server_lin
     - CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -o server.exe
   artifacts:
@@ -59,7 +66,7 @@ code_quality:
       paths:
         - gl-code-quality-report.json
       when: always
-    needs: ["build-task"]
+    needs: ["build-docker-task"]
 
 static_analysis:
   image: golang:1.24-alpine
@@ -73,7 +80,7 @@ static_analysis:
     - staticcheck ./... || true
     - gocritic check ./... || true
     - gocyclo -over 15 . || true
-  needs: ["build-task"]
+  needs: ["build-docker-task"]
   only:
     - master
   #  - dev
@@ -89,7 +96,7 @@ unit_tests:
       junit: unit_test_results.xml
     paths:
       - unit_test_results.xml
-  needs: ["build-task"]
+  needs: ["build-docker-task"]
   only:
     - master
   #  - dev
@@ -144,7 +151,7 @@ container_scanning:
       codequality: gl-container-scanning-report.json
     paths:
       - "gl-container-scanning-report.json"
-  needs: [ "build-task" ]
+  needs: [ "build-docker-task" ]
 
 secret_detection:
   stage: test
@@ -190,7 +197,7 @@ test-task:
   stage: test
   script:
     - echo "test"
-  needs: ["build-task"]
+  needs: ["build-docker-task"]
   only:
     - master
     - dev
