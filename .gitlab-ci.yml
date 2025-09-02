@@ -146,7 +146,6 @@ container_scanning:
   before_script:
     - |
       rm -f gl-container-scanning-report.json
-      echo "$DOCKER_PASS" | docker login -u $DOCKER_USER --password-stdin
   artifacts:
     reports:
       codequality: gl-container-scanning-report.json
