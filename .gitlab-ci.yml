@@ -37,6 +37,8 @@ build-docker-task:
 build-packages-task:
   stage: build
   image: golang:1.24-alpine
+  before_script:
+    - apk add --no-cache curl
   script:
     - CGO_ENABLED=0 GOOS=linux go build -o server_lin
     - CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -o server.exe
