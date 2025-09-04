@@ -40,10 +40,8 @@ build-packages-task:
   script:
     - CGO_ENABLED=0 GOOS=linux go build -o server_lin
     - CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -o server.exe
-  artifacts:
-    paths:
-      - server_lin
-      - server.exe
+    - curl -v -u ${NEXUS_USER}:${NEXUS_PASS} -X POST -F server_lin ${NEXUS_URL}/repository/go-projects/go-web-linux-${IMAGE_TAG}"
+    - curl -v -u ${NEXUS_USER}:${NEXUS_PASS} -X POST -F server.exe ${NEXUS_URL}/repository/go-projects/go-web-windows-${IMAGE_TAG}"
   only:
     - master
     - dev
